@@ -1,0 +1,192 @@
+<div>
+    <!-- filter -->
+    <div>
+
+        <!-- filter hidden------------------------------------------------------------ -->
+
+        <div style="display: none;">
+            <mat-form-field>
+                <!-- <input matInput class="form-field" [formControl]="nameFilter" placeholder="Name Filter"> -->
+
+                <mat-label>Name</mat-label>
+                <mat-select [formControl]="nameFilter" [(value)]="selectedName">
+                    <mat-option *ngFor="let FilterValue of  nameList" [value]="FilterValue">{{FilterValue}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            &nbsp;
+            <mat-form-field>
+                <!-- <input matInput class="form-field" [formControl]="weightFilter" placeholder="Weight Filter"> -->
+                <mat-label>Emp ID</mat-label>
+                <mat-select [formControl]="empIDFilter" [(value)]="selectedID">
+                    <mat-option *ngFor="let FilterValue of empIDList" [value]="FilterValue">{{FilterValue}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            &nbsp;
+            <mat-form-field>
+                <!-- <input matInput class="form-field" [formControl]="nameFilter" placeholder="Name Filter"> -->
+                <mat-label>Email ID</mat-label>
+                <mat-select [formControl]="emailIDFilter" [(value)]="selectedEmailID">
+                    <mat-option *ngFor="let FilterValue of  emailIDList" [value]="FilterValue">{{FilterValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            &nbsp;
+            <mat-form-field>
+                <mat-label>Designation</mat-label>
+                <!-- <input matInput class="form-field" [formControl]="weightFilter" placeholder="Weight Filter"> -->
+                <mat-select [formControl]="designationFilter" [(value)]="selectedDesgn">
+                    <mat-option *ngFor="let FilterValue of designList" [value]="FilterValue">{{FilterValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            &nbsp;
+            <mat-form-field>
+                <mat-label>MentorName</mat-label>
+                <!-- <input matInput class="form-field" [formControl]="weightFilter" placeholder="Weight Filter"> -->
+                <mat-select [formControl]="mentornameFilter" [(value)]="selectedMN">
+                    <mat-option *ngFor="let FilterValue of mentornameList" [value]="FilterValue">{{FilterValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            &nbsp;
+        </div>
+
+        <!-- filter hidden------------------------------------------------------------ -->
+        
+        
+        <mat-form-field>
+            <mat-label>Grade</mat-label>
+            <!-- <input matInput class="form-field" [formControl]="nameFilter" placeholder="Name Filter"> -->
+            <mat-select [formControl]="gradeFilter" [(value)]="selectedGrade">
+                <mat-option *ngFor="let FilterValue of  gradeList" [value]="FilterValue">{{FilterValue}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        &nbsp;
+        <mat-form-field>
+            <mat-label>Location</mat-label>
+            <!-- <input matInput class="form-field" [formControl]="weightFilter" placeholder="Weight Filter"> -->
+            <mat-select [formControl]="locationFilter" [(value)]="selectedlocn">
+                <mat-option *ngFor="let FilterValue of lcnList" [value]="FilterValue">{{FilterValue}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        &nbsp;
+        <mat-form-field>
+            <mat-label>STG Status</mat-label>
+            <!-- <input matInput class="form-field" [formControl]="nameFilter" placeholder="Name Filter"> -->
+            <mat-select [formControl]="STGSFilter" [(value)]="selectedSTGS">
+                <mat-option *ngFor="let FilterValue of  STGSList" [value]="FilterValue">{{FilterValue}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        &nbsp;
+        <mat-form-field>
+            <mat-label>LTG Status</mat-label>
+            <!-- <input matInput class="form-field" [formControl]="nameFilter" placeholder="Name Filter"> -->
+            <mat-select [formControl]="LTGSFilter" [(value)]="selectedLTGS">
+                <mat-option *ngFor="let FilterValue of  LTGSList" [value]="FilterValue">{{FilterValue}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        &nbsp;
+
+        <button mat-flat-button color="warn" (click)="resetFilters()">Reset Filter</button>
+    </div>
+    <!-- filter -->
+
+    
+    <!-- table -->
+    <div>
+        <button class="btnProceed" mat-flat-button color="warn" *ngIf="selectedTotalRow>0" (click)="selectedList(nextFlag)">Proceed with
+            {{selectedTotalRow>0?selectedTotalRow:""}} selected Employees</button>
+
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox (change)="$event ? masterToggle($event) : null"
+                        [checked]="selection.hasValue() && isAllSelected== true"
+                        [indeterminate]="selection.hasValue() && isAllSelected">
+                    </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selectRow($event, row) : null"
+                        (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row) == true">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef> Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.employeeName}}
+                </td>
+            </ng-container>
+
+            <!-- EmpID Column -->
+            <ng-container matColumnDef="employeeId">
+                <th mat-header-cell *matHeaderCellDef>Emp ID </th>
+                <td mat-cell *matCellDef="let element"> {{element.employeeId}}
+                </td>
+            </ng-container>
+
+            <!-- EmailID Column -->
+            <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef>Email ID </th>
+                <td mat-cell *matCellDef="let element"> {{element.email}}
+                </td>
+            </ng-container>
+
+            <!-- Designation Column -->
+            <ng-container matColumnDef="designation">
+                <th mat-header-cell *matHeaderCellDef> Designation </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.designation}}
+                </td>
+            </ng-container>
+
+            <!-- Grade Column -->
+            <ng-container matColumnDef="grade">
+                <th mat-header-cell *matHeaderCellDef> Grade </th>
+                <td mat-cell *matCellDef="let element"> {{element.grade}}
+                </td>
+            </ng-container>
+
+            <!-- Location Column -->
+            <ng-container matColumnDef="location">
+                <th mat-header-cell *matHeaderCellDef>Location</th>
+                <td mat-cell *matCellDef="let element"> {{element.location}}
+                </td>
+            </ng-container>
+
+            <!-- shortTermStatus Column -->
+            <ng-container matColumnDef="shortTermStatus">
+                <th mat-header-cell *matHeaderCellDef> Short Term Goal
+                    Status</th>
+                <td mat-cell *matCellDef="let element"> {{element.shortTermStatus}}
+                </td>
+            </ng-container>
+
+            <!-- longTermStatus Column -->
+            <ng-container matColumnDef="longTermStatus">
+                <th mat-header-cell *matHeaderCellDef>Long term goal status
+                </th>
+                <td mat-cell *matCellDef="let element"> {{element.longTermStatus}}
+                </td>
+            </ng-container>
+
+            <!-- Mentor Name Column -->
+            <ng-container matColumnDef="mentorName">
+                <th mat-header-cell *matHeaderCellDef>Mentor Name</th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.mentorName}}
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+            </tr>
+           
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons  class="mat-elevation-z8"></mat-paginator>
+    </div>
+    <!-- table -->
+
+</div>
